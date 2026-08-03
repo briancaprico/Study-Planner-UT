@@ -1,0 +1,6 @@
+{
+  "name": "Study Planner & Progress Tracker",
+  "description": "Aplikasi perencanaan jadwal belajar, pencatatan progres, statistik real-time, dan manajemen mata kuliah untuk mahasiswa.",
+  "requestFramePermissions": ["notifications"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
