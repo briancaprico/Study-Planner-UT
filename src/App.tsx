@@ -9,10 +9,22 @@ import {
   loadWeeklyTarget,
   saveWeeklyTarget,
 } from './utils/storage';
+import {
+  subscribeToSubjects,
+  subscribeToSessions,
+  subscribeToTarget,
+  saveSubjectToCloud,
+  deleteSubjectFromCloud,
+  saveSessionToCloud,
+  deleteSessionFromCloud,
+  saveTargetToCloud,
+  initializeCloudDataIfEmpty,
+  overwriteAllCloudData,
+} from './services/cloudSync';
 import { playCompletionChime, requestNotificationPermission, sendBrowserNotification } from './utils/notifications';
 import { calculateSessionStatus } from './utils/statusHelper';
 
-import { Navbar } from './components/Navbar';
+import { Navbar, CloudStatus } from './components/Navbar';
 import { OverviewCards } from './components/OverviewCards';
 import { SubjectProgressRings } from './components/SubjectProgressRings';
 import { ScheduleTable } from './components/ScheduleTable';
@@ -29,6 +41,14 @@ export default function App() {
   const [subjects, setSubjects] = useState<Subject[]>(loadSubjects);
   const [sessions, setSessions] = useState<StudySession[]>(loadSessions);
   const [weeklyTarget, setWeeklyTarget] = useState<WeeklyTarget>(loadWeeklyTarget);
+
+  // Cloud Sync Status state
+  const [cloudStatus, setCloudStatus] = useState<CloudStatus>({
+    isConnected: false,
+    isSyncing: true,
+    lastSynced: null,
+    error: null,
+  });
 
   // Active view
   const [activeTab, setActiveTab] = useState<'DASHBOARD' | 'SUBJECTS' | 'CALENDAR' | 'ANALYTICS'>('DASHBOARD');
@@ -79,7 +99,58 @@ export default function App() {
     }
   }, [isDarkMode]);
 
-  // Save to LocalStorage on state changes
+  // Real-time Cloud Sync Subscriptions via Firestore
+  useEffect(() => {
+    let unsubSubjects: (() => void) | undefined;
+    let unsubSessions: (() => void) | undefined;
+    let unsubTarget: (() => void) | undefined;
+
+    // Seed Firestore if empty with local data
+    initializeCloudDataIfEmpty(subjects, sessions, weeklyTarget).then(() => {
+      setCloudStatus((prev) => ({ ...prev, isSyncing: false, isConnected: true }));
+    });
+
+    unsubSubjects = subscribeToSubjects(
+      (cloudSubjects) => {
+        if (cloudSubjects.length > 0) {
+          setSubjects(cloudSubjects);
+          saveSubjects(cloudSubjects);
+        }
+        setCloudStatus((prev) => ({ ...prev, isConnected: true, isSyncing: false, lastSynced: new Date() }));
+      },
+      (err) => setCloudStatus((prev) => ({ ...prev, isConnected: false, isSyncing: false, error: err.message }))
+    );
+
+    unsubSessions = subscribeToSessions(
+      (cloudSessions) => {
+        if (cloudSessions.length > 0) {
+          setSessions(cloudSessions);
+          saveSessions(cloudSessions);
+        }
+        setCloudStatus((prev) => ({ ...prev, isConnected: true, isSyncing: false, lastSynced: new Date() }));
+      },
+      (err) => setCloudStatus((prev) => ({ ...prev, isConnected: false, isSyncing: false, error: err.message }))
+    );
+
+    unsubTarget = subscribeToTarget(
+      (cloudTarget) => {
+        if (cloudTarget) {
+          setWeeklyTarget(cloudTarget);
+          saveWeeklyTarget(cloudTarget);
+        }
+        setCloudStatus((prev) => ({ ...prev, isConnected: true, isSyncing: false, lastSynced: new Date() }));
+      },
+      (err) => setCloudStatus((prev) => ({ ...prev, isConnected: false, isSyncing: false, error: err.message }))
+    );
+
+    return () => {
+      if (unsubSubjects) unsubSubjects();
+      if (unsubSessions) unsubSessions();
+      if (unsubTarget) unsubTarget();
+    };
+  }, []);
+
+  // Save to LocalStorage fallback on state changes
   useEffect(() => {
     saveSubjects(subjects);
   }, [subjects]);
@@ -92,7 +163,13 @@ export default function App() {
     saveWeeklyTarget(weeklyTarget);
   }, [weeklyTarget]);
 
-  // Periodic Reminder Checker (checks if any session starts in the next 15 minutes)
+  // Update target handler
+  const handleUpdateTarget = (target: WeeklyTarget) => {
+    setWeeklyTarget(target);
+    saveTargetToCloud(target);
+  };
+
+  // Periodic Reminder Checker
   useEffect(() => {
     const checkUpcomingReminders = () => {
       const now = new Date();
@@ -106,7 +183,6 @@ export default function App() {
           const diffMs = sessionStart.getTime() - now.getTime();
           const diffMins = diffMs / (1000 * 60);
 
-          // If session starts in 0 to 15 mins
           if (diffMins > 0 && diffMins <= 15) {
             const subj = subjects.find((sub) => sub.id === s.subjectId);
             const title = `📚 Pengingat Belajar: ${s.title}`;
@@ -119,7 +195,7 @@ export default function App() {
       });
     };
 
-    const interval = setInterval(checkUpcomingReminders, 5 * 60 * 1000); // Every 5 mins
+    const interval = setInterval(checkUpcomingReminders, 5 * 60 * 1000);
     return () => clearInterval(interval);
   }, [sessions, subjects]);
 
@@ -133,11 +209,13 @@ export default function App() {
         if (nextState) {
           newlyCompleted = true;
         }
-        return {
+        const updatedSess = {
           ...s,
           isCompleted: nextState,
           completedAt: nextState ? new Date().toISOString() : undefined,
         };
+        saveSessionToCloud(updatedSess);
+        return updatedSess;
       }
       return s;
     });
@@ -145,7 +223,6 @@ export default function App() {
     setSessions(updated);
 
     if (newlyCompleted) {
-      // Play celebratory chime & burst confetti!
       playCompletionChime();
       try {
         confetti({
@@ -162,16 +239,17 @@ export default function App() {
   // Add / Save Session
   const handleSaveSession = (sessionData: Omit<StudySession, 'id'> | StudySession) => {
     if ('id' in sessionData) {
-      // Edit existing
-      setSessions((prev) => prev.map((s) => (s.id === sessionData.id ? (sessionData as StudySession) : s)));
+      const updatedSess = sessionData as StudySession;
+      setSessions((prev) => prev.map((s) => (s.id === updatedSess.id ? updatedSess : s)));
+      saveSessionToCloud(updatedSess);
     } else {
-      // Create new
       const newSession: StudySession = {
         ...sessionData,
         id: `sess-${Date.now()}`,
         order: sessions.length + 1,
       };
       setSessions((prev) => [newSession, ...prev]);
+      saveSessionToCloud(newSession);
     }
   };
 
@@ -185,12 +263,14 @@ export default function App() {
       completedAt: undefined,
     };
     setSessions((prev) => [duplicated, ...prev]);
+    saveSessionToCloud(duplicated);
   };
 
   // Delete Session
   const handleDeleteSession = (id: string) => {
     if (window.confirm('Apakah Anda yakin ingin menghapus sesi belajar ini?')) {
       setSessions((prev) => prev.filter((s) => s.id !== id));
+      deleteSessionFromCloud(id);
     }
   };
 
@@ -201,10 +281,12 @@ export default function App() {
       id: `subj-${Date.now()}`,
     };
     setSubjects((prev) => [...prev, created]);
+    saveSubjectToCloud(created);
   };
 
   const handleUpdateSubject = (updated: Subject) => {
     setSubjects((prev) => prev.map((s) => (s.id === updated.id ? updated : s)));
+    saveSubjectToCloud(updated);
   };
 
   const handleDeleteSubject = (id: string) => {
@@ -214,6 +296,8 @@ export default function App() {
       }
     }
     setSubjects((prev) => prev.filter((s) => s.id !== id));
+    deleteSubjectFromCloud(id);
+    sessions.filter((s) => s.subjectId === id).forEach((s) => deleteSessionFromCloud(s.id));
     setSessions((prev) => prev.filter((s) => s.subjectId !== id));
   };
 
@@ -233,9 +317,10 @@ export default function App() {
     setSubjects(newSubjs);
     setSessions(newSess);
     setWeeklyTarget(newTarget);
+    overwriteAllCloudData(newSubjs, newSess, newTarget);
   };
 
-  // Handle tab change with deferred requestAnimationFrame scroll and modal cleanup to prevent UI lock
+  // Handle tab change with deferred requestAnimationFrame scroll and modal cleanup
   const handleTabChange = (tab: 'DASHBOARD' | 'SUBJECTS' | 'CALENDAR' | 'ANALYTICS') => {
     setActiveTab(tab);
     setIsSubjectModalOpen(false);
@@ -265,6 +350,7 @@ export default function App() {
         hasNotificationPermission={hasNotifPermission}
         onRequestNotification={handleRequestNotification}
         onOpenBackupModal={() => setIsBackupModalOpen(true)}
+        cloudStatus={cloudStatus}
         onOpenAddSession={() => {
           setEditingSession(null);
           setModalDefaultDate(undefined);
@@ -279,7 +365,7 @@ export default function App() {
           sessions={sessions}
           subjects={subjects}
           weeklyTarget={weeklyTarget}
-          onUpdateTarget={setWeeklyTarget}
+          onUpdateTarget={handleUpdateTarget}
         />
 
         {/* Tab Content Area Container */}

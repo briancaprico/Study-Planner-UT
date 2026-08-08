@@ -11,8 +11,17 @@ import {
   BellOff, 
   Database, 
   Plus, 
-  Search 
+  Cloud,
+  CloudOff,
+  RefreshCw
 } from 'lucide-react';
+
+export interface CloudStatus {
+  isConnected: boolean;
+  isSyncing: boolean;
+  lastSynced: Date | null;
+  error: string | null;
+}
 
 interface Props {
   activeTab: 'DASHBOARD' | 'SUBJECTS' | 'CALENDAR' | 'ANALYTICS';
@@ -23,6 +32,7 @@ interface Props {
   onRequestNotification: () => void;
   onOpenBackupModal: () => void;
   onOpenAddSession: () => void;
+  cloudStatus?: CloudStatus;
 }
 
 export const Navbar: React.FC<Props> = ({
@@ -34,6 +44,7 @@ export const Navbar: React.FC<Props> = ({
   onRequestNotification,
   onOpenBackupModal,
   onOpenAddSession,
+  cloudStatus = { isConnected: true, isSyncing: false, lastSynced: new Date(), error: null },
 }) => {
   return (
     <header className="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 transition-colors">
@@ -44,9 +55,43 @@ export const Navbar: React.FC<Props> = ({
             <GraduationCap className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-base font-bold text-slate-900 dark:text-slate-100 leading-none">
-              StudyPlanner
-            </h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-base font-bold text-slate-900 dark:text-slate-100 leading-none">
+                StudyPlanner
+              </h1>
+              {/* Cloud Realtime Badge */}
+              <div
+                className={`hidden xs:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold border ${
+                  cloudStatus.isSyncing
+                    ? 'bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800'
+                    : cloudStatus.isConnected
+                    ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800'
+                    : 'bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-800'
+                }`}
+                title={
+                  cloudStatus.isConnected
+                    ? 'Tersinkronisasi Realtime dengan Cloud Firestore! Buka di HP/Laptop lain, data langsung ter-update otomatis.'
+                    : 'Terhubung ke mode lokal. Cek koneksi internet untuk sinkronisasi cloud.'
+                }
+              >
+                {cloudStatus.isSyncing ? (
+                  <>
+                    <RefreshCw className="w-3 h-3 animate-spin text-amber-500" />
+                    <span>Syncing...</span>
+                  </>
+                ) : cloudStatus.isConnected ? (
+                  <>
+                    <Cloud className="w-3 h-3 text-emerald-500" />
+                    <span>Cloud Sync</span>
+                  </>
+                ) : (
+                  <>
+                    <CloudOff className="w-3 h-3 text-rose-500" />
+                    <span>Offline</span>
+                  </>
+                )}
+              </div>
+            </div>
             <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 hidden sm:block">
               Progress & Schedule Tracker Mahasiswa
             </p>

@@ -1,0 +1,51 @@
+{
+  "entities": {
+    "subjects": {
+      "title": "Subject",
+      "description": "Mata kuliah dan mata pelajaran yang dipelajari",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "code": { "type": "string" },
+        "name": { "type": "string" },
+        "color": { "type": "string" },
+        "targetHours": { "type": "number" },
+        "lecturer": { "type": "string" },
+        "sks": { "type": "number" },
+        "icon": { "type": "string" },
+        "topics": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["id", "code", "name", "color", "targetHours"]
+    },
+    "sessions": {
+      "title": "StudySession",
+      "description": "Sesi belajar jadwal dan riwayat",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "title": { "type": "string" },
+        "date": { "type": "string" },
+        "startTime": { "type": "string" },
+        "endTime": { "type": "string" },
+        "durationMinutes": { "type": "number" },
+        "sessionType": { "type": "string" },
+        "isCompleted": { "type": "boolean" },
+        "notes": { "type": "string" },
+        "completedAt": { "type": "string" },
+        "order": { "type": "number" }
+      },
+      "required": ["id", "subjectId", "title", "date", "startTime", "endTime", "durationMinutes", "sessionType", "isCompleted"]
+    },
+    "settings": {
+      "title": "WeeklyTarget",
+      "description": "Pengaturan target mingguan dan streak",
+      "type": "object",
+      "properties": {
+        "targetHours": { "type": "number" },
+        "streakDays": { "type": "number" },
+        "lastStudiedDate": { "type": "string" }
+      }
+    }
+  }
+}

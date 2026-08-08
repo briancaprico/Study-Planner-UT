@@ -1,3 +1,5 @@
+import { StudySession } from '../types';
+
 export interface WeekRange {
   startOfWeek: Date;
   endOfWeek: Date;
@@ -48,3 +50,16 @@ export function isDateInWeek(dateStr?: string, weekRange?: WeekRange): boolean {
   const d = new Date(dateStr.includes('T') ? dateStr : dateStr + 'T00:00:00');
   return d >= range.startOfWeek && d <= range.endOfWeek;
 }
+
+export function sortSessionsByDate(sessionsList: StudySession[]): StudySession[] {
+  return [...sessionsList].sort((a, b) => {
+    if (a.date !== b.date) {
+      return a.date.localeCompare(b.date);
+    }
+    if (a.startTime !== b.startTime) {
+      return a.startTime.localeCompare(b.startTime);
+    }
+    return (a.order || 0) - (b.order || 0);
+  });
+}
+

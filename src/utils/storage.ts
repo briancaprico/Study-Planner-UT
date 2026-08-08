@@ -1,5 +1,6 @@
 import { Subject, StudySession, WeeklyTarget } from '../types';
 import { INITIAL_SUBJECTS, getInitialSessions } from '../data/initialData';
+import { sortSessionsByDate } from './dateHelper';
 
 const KEYS = {
   SUBJECTS: 'study_planner_subjects_v7',
@@ -32,12 +33,12 @@ export const loadSessions = (): StudySession[] => {
   try {
     const raw = localStorage.getItem(KEYS.SESSIONS);
     if (raw) {
-      return JSON.parse(raw);
+      return sortSessionsByDate(JSON.parse(raw));
     }
   } catch (e) {
     console.error('Failed to parse sessions from localStorage', e);
   }
-  return getInitialSessions();
+  return sortSessionsByDate(getInitialSessions());
 };
 
 export const saveSessions = (sessions: StudySession[]): void => {

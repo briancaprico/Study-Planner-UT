@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StudySession, Subject, FilterOptions, SessionType, SessionStatus } from '../types';
 import { calculateSessionStatus, getStatusBadgeStyle, getSessionTypeBadge } from '../utils/statusHelper';
-import { getWeekRange, isDateInWeek } from '../utils/dateHelper';
+import { getWeekRange, isDateInWeek, sortSessionsByDate } from '../utils/dateHelper';
 import { 
   Check, 
   Search, 
@@ -76,57 +76,59 @@ export const ScheduleTable: React.FC<Props> = ({
     }
   };
 
-  // Filter logic
+  // Filter & sort logic (urut berdasarkan tanggal awal Agustus - September)
   const now = new Date();
-  const filteredSessions = sessions.filter((session) => {
-    const subj = subjects.find((s) => s.id === session.subjectId);
-    const subjName = subj ? subj.name.toLowerCase() : '';
-    const subjCode = subj ? subj.code.toLowerCase() : '';
-    const query = filters.searchQuery.toLowerCase().trim();
+  const filteredSessions = sortSessionsByDate(
+    sessions.filter((session) => {
+      const subj = subjects.find((s) => s.id === session.subjectId);
+      const subjName = subj ? subj.name.toLowerCase() : '';
+      const subjCode = subj ? subj.code.toLowerCase() : '';
+      const query = filters.searchQuery.toLowerCase().trim();
 
-    // Search query check
-    if (query) {
-      const matchTitle = session.title.toLowerCase().includes(query);
-      const matchNotes = (session.notes || '').toLowerCase().includes(query);
-      const matchSubj = subjName.includes(query) || subjCode.includes(query);
-      if (!matchTitle && !matchNotes && !matchSubj) return false;
-    }
+      // Search query check
+      if (query) {
+        const matchTitle = session.title.toLowerCase().includes(query);
+        const matchNotes = (session.notes || '').toLowerCase().includes(query);
+        const matchSubj = subjName.includes(query) || subjCode.includes(query);
+        if (!matchTitle && !matchNotes && !matchSubj) return false;
+      }
 
-    // Subject check
-    if (filters.subjectId !== 'ALL' && session.subjectId !== filters.subjectId) {
-      return false;
-    }
+      // Subject check
+      if (filters.subjectId !== 'ALL' && session.subjectId !== filters.subjectId) {
+        return false;
+      }
 
-    // Session Type check
-    if (filters.sessionType !== 'ALL' && session.sessionType !== filters.sessionType) {
-      return false;
-    }
+      // Session Type check
+      if (filters.sessionType !== 'ALL' && session.sessionType !== filters.sessionType) {
+        return false;
+      }
 
-    // Status check
-    const currentStatus = calculateSessionStatus(session, now);
-    if (filters.status !== 'ALL' && currentStatus !== filters.status) {
-      return false;
-    }
+      // Status check
+      const currentStatus = calculateSessionStatus(session, now);
+      if (filters.status !== 'ALL' && currentStatus !== filters.status) {
+        return false;
+      }
 
-    // Date range check
-    if (filters.dateRange !== 'ALL') {
-      const sDate = new Date(session.date + 'T00:00:00');
-      const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+      // Date range check
+      if (filters.dateRange !== 'ALL') {
+        const sDate = new Date(session.date + 'T00:00:00');
+        const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 
-      if (filters.dateRange === 'TODAY') {
-        if (session.date !== todayStr) return false;
-      } else if (filters.dateRange === 'THIS_WEEK') {
-        const weekRange = getWeekRange(now);
-        if (!isDateInWeek(session.date, weekRange)) return false;
-      } else if (filters.dateRange === 'THIS_MONTH') {
-        if (sDate.getMonth() !== now.getMonth() || sDate.getFullYear() !== now.getFullYear()) {
-          return false;
+        if (filters.dateRange === 'TODAY') {
+          if (session.date !== todayStr) return false;
+        } else if (filters.dateRange === 'THIS_WEEK') {
+          const weekRange = getWeekRange(now);
+          if (!isDateInWeek(session.date, weekRange)) return false;
+        } else if (filters.dateRange === 'THIS_MONTH') {
+          if (sDate.getMonth() !== now.getMonth() || sDate.getFullYear() !== now.getFullYear()) {
+            return false;
+          }
         }
       }
-    }
 
-    return true;
-  });
+      return true;
+    })
+  );
 
   // Drag & Drop handlers
   const handleDragStart = (e: React.DragEvent, index: number) => {
