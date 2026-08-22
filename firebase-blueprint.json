@@ -46,6 +46,25 @@
         "streakDays": { "type": "number" },
         "lastStudiedDate": { "type": "string" }
       }
+    },
+    "tuton_tasks": {
+      "title": "TutonTaskItem",
+      "description": "Tugas dan aktivitas Tutorial Online (Tuton) Universitas Terbuka",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "subjectCode": { "type": "string" },
+        "subjectName": { "type": "string" },
+        "sessionNumber": { "type": "number" },
+        "title": { "type": "string" },
+        "taskType": { "type": "string" },
+        "dueDate": { "type": "string" },
+        "time": { "type": "string" },
+        "isCompleted": { "type": "boolean" },
+        "notes": { "type": "string" }
+      },
+      "required": ["id", "subjectId", "subjectCode", "subjectName", "sessionNumber", "title", "taskType", "dueDate", "isCompleted"]
     }
   }
 }

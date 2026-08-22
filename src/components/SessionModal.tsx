@@ -29,8 +29,6 @@ export const SessionModal: React.FC<Props> = ({
   onSave,
   onClose,
 }) => {
-  if (!isOpen) return null;
-
   const todayStr = () => {
     const d = new Date();
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -116,20 +114,22 @@ export const SessionModal: React.FC<Props> = ({
     onClose();
   };
 
+  if (!isOpen) return null;
+
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full p-5 border border-slate-200 dark:border-slate-800 shadow-2xl animate-in fade-in zoom-in duration-150 max-h-[90vh] flex flex-col">
+    <div className="fixed inset-0 z-50 bg-stone-950/60 backdrop-blur-xs flex items-center justify-center p-4">
+      <div className="bg-white dark:bg-stone-900 rounded-2xl max-w-lg w-full p-5 border border-[#E8E1D5] dark:border-stone-800 shadow-2xl animate-in fade-in zoom-in duration-150 max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 shrink-0">
+        <div className="flex items-center justify-between pb-3 border-b border-[#E8E1D5] dark:border-stone-800 shrink-0">
           <div className="flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-            <h2 className="font-bold text-slate-900 dark:text-slate-100 text-base">
+            <BookOpen className="w-5 h-5 text-[#0D7A57] dark:text-emerald-400" />
+            <h2 className="font-bold text-stone-900 dark:text-stone-100 text-base">
               {editingSession ? 'Edit Sesi Belajar' : 'Tambah Sesi Belajar Baru'}
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg"
+            className="p-1 text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 rounded-lg cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -139,14 +139,14 @@ export const SessionModal: React.FC<Props> = ({
         <form onSubmit={handleSubmit} className="py-4 overflow-y-auto flex-1 space-y-4">
           {/* Mata Kuliah Select */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+            <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
               Mata Kuliah *
             </label>
             <select
               value={subjectId}
               onChange={(e) => setSubjectId(e.target.value)}
               required
-              className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 text-xs rounded-xl border border-[#E8E1D5] dark:border-stone-700 bg-[#FAF7F2] dark:bg-stone-800 text-stone-900 dark:text-stone-100 focus:ring-2 focus:ring-[#10B981]"
             >
               {subjects.map((s) => (
                 <option key={s.id} value={s.id}>
@@ -158,7 +158,7 @@ export const SessionModal: React.FC<Props> = ({
 
           {/* Title */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+            <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
               Judul / Materi Belajar *
             </label>
             <input
@@ -167,14 +167,14 @@ export const SessionModal: React.FC<Props> = ({
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
-              className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
+              className="w-full px-3 py-2 text-xs rounded-xl border border-[#E8E1D5] dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 focus:ring-2 focus:ring-[#10B981] placeholder:text-stone-400"
             />
           </div>
 
           {/* Date & Times */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
                 Tanggal *
               </label>
               <input
@@ -182,12 +182,12 @@ export const SessionModal: React.FC<Props> = ({
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
                 required
-                className="w-full px-3 py-1.5 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-1.5 text-xs rounded-xl border border-[#E8E1D5] dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 focus:ring-2 focus:ring-[#10B981]"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
                 Jam Mulai
               </label>
               <input
@@ -195,12 +195,12 @@ export const SessionModal: React.FC<Props> = ({
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
                 required
-                className="w-full px-3 py-1.5 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-1.5 text-xs rounded-xl border border-[#E8E1D5] dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 focus:ring-2 focus:ring-[#10B981]"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
                 Jam Selesai
               </label>
               <input
@@ -208,14 +208,14 @@ export const SessionModal: React.FC<Props> = ({
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
                 required
-                className="w-full px-3 py-1.5 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-1.5 text-xs rounded-xl border border-[#E8E1D5] dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 focus:ring-2 focus:ring-[#10B981]"
               />
             </div>
           </div>
 
           {/* Jenis Sesi */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+            <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
               Jenis Sesi *
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -224,10 +224,10 @@ export const SessionModal: React.FC<Props> = ({
                   key={type}
                   type="button"
                   onClick={() => setSessionType(type)}
-                  className={`p-2 text-xs rounded-xl border font-medium text-left transition-all ${
+                  className={`p-2 text-xs rounded-xl border font-medium text-left transition-all cursor-pointer ${
                     sessionType === type
-                      ? 'bg-blue-50 dark:bg-blue-950/60 border-blue-500 text-blue-700 dark:text-blue-300 ring-2 ring-blue-500/20'
-                      : 'bg-slate-50/50 dark:bg-slate-800/40 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                      ? 'bg-[#E8F8F2] dark:bg-emerald-950/60 border-[#10B981] text-[#0D7A57] dark:text-emerald-300 ring-2 ring-emerald-500/20'
+                      : 'bg-[#FAF7F2] dark:bg-stone-800/40 border-[#E8E1D5] dark:border-stone-700 text-stone-700 dark:text-stone-300 hover:bg-[#F3EFEA] dark:hover:bg-stone-800'
                   }`}
                 >
                   {type}
@@ -238,7 +238,7 @@ export const SessionModal: React.FC<Props> = ({
 
           {/* Catatan */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+            <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
               Catatan / Target Pencapaian Sesi
             </label>
             <textarea
@@ -246,7 +246,7 @@ export const SessionModal: React.FC<Props> = ({
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={3}
-              className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400 resize-none"
+              className="w-full px-3 py-2 text-xs rounded-xl border border-[#E8E1D5] dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 focus:ring-2 focus:ring-[#10B981] placeholder:text-stone-400 resize-none"
             />
           </div>
 
@@ -257,25 +257,25 @@ export const SessionModal: React.FC<Props> = ({
               id="isCompletedCheck"
               checked={isCompleted}
               onChange={(e) => setIsCompleted(e.target.checked)}
-              className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+              className="w-4 h-4 rounded border-[#E8E1D5] text-[#0D7A57] accent-[#0D7A57] focus:ring-[#10B981]"
             />
-            <label htmlFor="isCompletedCheck" className="text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
+            <label htmlFor="isCompletedCheck" className="text-xs font-semibold text-stone-700 dark:text-stone-300 cursor-pointer">
               Tandai Sesi Ini Langsung Selesai
             </label>
           </div>
 
           {/* Submit Actions */}
-          <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-end gap-2">
+          <div className="pt-3 border-t border-[#E8E1D5] dark:border-stone-800 flex items-center justify-end gap-2">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
+              className="px-4 py-2 text-xs font-semibold text-stone-600 dark:text-stone-300 hover:bg-[#FAF7F2] dark:hover:bg-stone-800 rounded-xl transition-colors cursor-pointer"
             >
               Batal
             </button>
             <button
               type="submit"
-              className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-sm transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold bg-[#0D7A57] hover:bg-[#0A5D42] text-white rounded-xl shadow-sm transition-colors cursor-pointer"
             >
               <Save className="w-4 h-4" />
               {editingSession ? 'Simpan Perubahan' : 'Tambah Sesi'}

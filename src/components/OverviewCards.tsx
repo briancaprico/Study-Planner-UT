@@ -122,36 +122,36 @@ export const OverviewCards: React.FC<Props> = ({
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mb-5">
       {/* 1. Total Progress Card */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col justify-between relative overflow-hidden group">
-        <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 dark:bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/10 transition-all pointer-events-none" />
+      <div className="bg-white dark:bg-stone-900 rounded-2xl p-4 border border-[#E8E1D5] dark:border-stone-800 shadow-sm flex flex-col justify-between relative overflow-hidden group">
+        <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 dark:bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/10 transition-all pointer-events-none" />
         <div>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+            <span className="text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-stone-400">
               Total Progress
             </span>
-            <div className="p-2 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400">
+            <div className="p-2 rounded-xl bg-[#E8F8F2] dark:bg-emerald-950/60 text-[#0D7A57] dark:text-emerald-400">
               <TrendingUp className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+            <span className="text-2xl font-bold text-stone-900 dark:text-stone-100">
               {totalProgressPercent}%
             </span>
-            <span className="text-xs text-slate-500 dark:text-slate-400">
+            <span className="text-xs text-stone-500 dark:text-stone-400">
               ({completedCount} dari {totalSessions} sesi)
             </span>
           </div>
         </div>
 
         <div className="mt-3">
-          <div className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+          <div className="w-full h-2 bg-[#F4EFE6] dark:bg-stone-800 rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full transition-all duration-700"
+              className="h-full bg-gradient-to-r from-[#10B981] to-teal-600 rounded-full transition-all duration-700"
               style={{ width: `${totalProgressPercent}%` }}
             />
           </div>
-          <div className="mt-2 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400">
-            <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-medium">
+          <div className="mt-2 flex items-center justify-between text-[11px] text-stone-500 dark:text-stone-400">
+            <span className="flex items-center gap-1 text-[#0D7A57] dark:text-emerald-400 font-medium">
               <CheckCircle2 className="w-3 h-3" /> {completedCount} Selesai
             </span>
             {overdueCount > 0 && (
@@ -164,32 +164,32 @@ export const OverviewCards: React.FC<Props> = ({
       </div>
 
       {/* 2. Total Jam Belajar */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col justify-between relative overflow-hidden group">
+      <div className="bg-white dark:bg-stone-900 rounded-2xl p-4 border border-[#E8E1D5] dark:border-stone-800 shadow-sm flex flex-col justify-between relative overflow-hidden group">
         <div>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+            <span className="text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-stone-400">
               Total Jam Belajar
             </span>
-            <div className="p-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400">
+            <div className="p-2 rounded-xl bg-[#FDF6EC] dark:bg-amber-950/60 text-[#8D6A47] dark:text-amber-400">
               <Clock className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline gap-1.5">
-            <span className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+            <span className="text-2xl font-bold text-stone-900 dark:text-stone-100">
               {totalHoursSpent.toFixed(1)}
             </span>
-            <span className="text-sm font-medium text-slate-500 dark:text-slate-400">
+            <span className="text-sm font-medium text-stone-500 dark:text-stone-400">
               Jam
             </span>
           </div>
         </div>
 
-        <div className="mt-3 pt-2 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs">
-          <span className="text-slate-500 dark:text-slate-400">
-            Terjadwal: <strong className="text-slate-700 dark:text-slate-300">{totalScheduledHours.toFixed(1)} Jam</strong>
+        <div className="mt-3 pt-2 border-t border-[#F4EFE6] dark:border-stone-800/80 flex items-center justify-between text-xs">
+          <span className="text-stone-500 dark:text-stone-400">
+            Terjadwal: <strong className="text-stone-800 dark:text-stone-200">{totalScheduledHours.toFixed(1)} Jam</strong>
           </span>
           {mostStudiedSubj && (
-            <span className="text-[11px] text-slate-500 dark:text-slate-400 truncate max-w-[120px]" title={(mostStudiedSubj as Subject).name}>
+            <span className="text-[11px] text-stone-500 dark:text-stone-400 truncate max-w-[120px]" title={(mostStudiedSubj as Subject).name}>
               Top: <strong style={{ color: (mostStudiedSubj as Subject).color }}>{(mostStudiedSubj as Subject).code}</strong>
             </span>
           )}
@@ -197,36 +197,36 @@ export const OverviewCards: React.FC<Props> = ({
       </div>
 
       {/* 3. Learning Streak */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col justify-between relative overflow-hidden group">
+      <div className="bg-white dark:bg-stone-900 rounded-2xl p-4 border border-[#E8E1D5] dark:border-stone-800 shadow-sm flex flex-col justify-between relative overflow-hidden group">
         <div>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+            <span className="text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-stone-400">
               Learning Streak
             </span>
-            <div className="p-2 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-500 dark:text-amber-400 animate-bounce">
-              <Flame className="w-4 h-4 fill-amber-500" />
+            <div className="p-2 rounded-xl bg-[#FBF4EB] dark:bg-amber-950/60 text-[#A77B50] dark:text-amber-400 animate-bounce">
+              <Flame className="w-4 h-4 fill-[#A77B50]" />
             </div>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+            <span className="text-2xl font-bold text-stone-900 dark:text-stone-100">
               {currentStreakDisplay} Hari
             </span>
-            <span className="text-xs font-medium text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded-full border border-amber-200/60 dark:border-amber-800/60">
+            <span className="text-xs font-medium text-[#8D6A47] dark:text-amber-400 bg-[#FDF6EC] dark:bg-amber-950/60 px-2 py-0.5 rounded-full border border-[#E8D6BF]/80 dark:border-amber-800/60">
               {completedDates.length} Hari Belajar 🔥
             </span>
           </div>
         </div>
 
-        <div className="mt-3 text-xs text-slate-500 dark:text-slate-400">
+        <div className="mt-3 text-xs text-stone-500 dark:text-stone-400">
           Otomatis bertambah setiap kali Anda menyelesaikan sesi di hari berurutan!
         </div>
       </div>
 
       {/* 4. Target Mingguan */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col justify-between relative overflow-hidden group">
+      <div className="bg-white dark:bg-stone-900 rounded-2xl p-4 border border-[#E8E1D5] dark:border-stone-800 shadow-sm flex flex-col justify-between relative overflow-hidden group">
         <div>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+            <span className="text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-stone-400">
               Target ({weekRange.label})
             </span>
             <button
@@ -234,10 +234,10 @@ export const OverviewCards: React.FC<Props> = ({
                 setTargetInput(weeklyTarget.targetHours.toString());
                 setIsEditingTarget(!isEditingTarget);
               }}
-              className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+              className="p-1.5 rounded-lg hover:bg-[#F4EFE6] dark:hover:bg-stone-800 text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 transition-colors"
               title="Ubah Target Mingguan"
             >
-              <Edit3 className="w-3.5 h-3.5" />
+              <Edit3 className="w-3.5 h-3.5 text-[#8D6A47]" />
             </button>
           </div>
 
@@ -247,23 +247,23 @@ export const OverviewCards: React.FC<Props> = ({
                 type="number"
                 value={targetInput}
                 onChange={(e) => setTargetInput(e.target.value)}
-                className="w-20 px-2 py-1 text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-20 px-2 py-1 text-sm rounded-lg border border-[#DFD5C4] dark:border-stone-700 bg-[#FAF7F2] dark:bg-stone-800 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 min="1"
                 max="100"
               />
               <button
                 onClick={handleSaveTarget}
-                className="px-2.5 py-1 text-xs font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                className="px-2.5 py-1 text-xs font-medium bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors cursor-pointer"
               >
                 Simpan
               </button>
             </div>
           ) : (
             <div className="flex items-baseline gap-1.5">
-              <span className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+              <span className="text-2xl font-bold text-stone-900 dark:text-stone-100">
                 {weeklyCompletedHours.toFixed(1)}
               </span>
-              <span className="text-sm font-medium text-slate-500 dark:text-slate-400">
+              <span className="text-sm font-medium text-stone-500 dark:text-stone-400">
                 / {weeklyTarget.targetHours} Jam
               </span>
             </div>
@@ -271,17 +271,17 @@ export const OverviewCards: React.FC<Props> = ({
         </div>
 
         <div className="mt-3">
-          <div className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+          <div className="w-full h-2 bg-[#F4EFE6] dark:bg-stone-800 rounded-full overflow-hidden">
             <div
               className="h-full bg-emerald-500 rounded-full transition-all duration-700"
               style={{ width: `${Math.min(100, weeklyTargetPercent)}%` }}
             />
           </div>
-          <div className="mt-1.5 flex items-center justify-between text-[11px] font-medium text-slate-500 dark:text-slate-400">
+          <div className="mt-1.5 flex items-center justify-between text-[11px] font-medium text-stone-500 dark:text-stone-400">
             <span className="truncate" title={`Terjadwal ${weekRange.label}: ${weeklyScheduledHours.toFixed(1)} Jam`}>
-              Terjadwal: <strong className="text-slate-700 dark:text-slate-300">{weeklyScheduledHours.toFixed(1)} Jam</strong> ({weeklyCompletedSessions.length}/{weeklySessions.length})
+              Terjadwal: <strong className="text-stone-800 dark:text-stone-200">{weeklyScheduledHours.toFixed(1)} Jam</strong> ({weeklyCompletedSessions.length}/{weeklySessions.length})
             </span>
-            <span className="text-emerald-600 dark:text-emerald-400 font-semibold ml-1 shrink-0">
+            <span className="text-[#0D7A57] dark:text-emerald-400 font-semibold ml-1 shrink-0">
               {weeklyTargetPercent}%
             </span>
           </div>

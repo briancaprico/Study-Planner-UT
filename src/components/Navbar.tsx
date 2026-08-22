@@ -5,10 +5,6 @@ import {
   BookOpen, 
   Calendar as CalendarIcon, 
   BarChart2, 
-  Moon, 
-  Sun, 
-  Bell, 
-  BellOff, 
   Database, 
   Plus, 
   Cloud,
@@ -24,12 +20,12 @@ export interface CloudStatus {
 }
 
 interface Props {
-  activeTab: 'DASHBOARD' | 'SUBJECTS' | 'CALENDAR' | 'ANALYTICS';
-  onTabChange: (tab: 'DASHBOARD' | 'SUBJECTS' | 'CALENDAR' | 'ANALYTICS') => void;
-  isDarkMode: boolean;
-  onToggleDarkMode: () => void;
-  hasNotificationPermission: boolean;
-  onRequestNotification: () => void;
+  activeTab: 'DASHBOARD' | 'SUBJECTS' | 'CALENDAR' | 'ANALYTICS' | 'TUTON';
+  onTabChange: (tab: 'DASHBOARD' | 'SUBJECTS' | 'CALENDAR' | 'ANALYTICS' | 'TUTON') => void;
+  isDarkMode?: boolean;
+  onToggleDarkMode?: () => void;
+  hasNotificationPermission?: boolean;
+  onRequestNotification?: () => void;
   onOpenBackupModal: () => void;
   onOpenAddSession: () => void;
   cloudStatus?: CloudStatus;
@@ -38,34 +34,30 @@ interface Props {
 export const Navbar: React.FC<Props> = ({
   activeTab,
   onTabChange,
-  isDarkMode,
-  onToggleDarkMode,
-  hasNotificationPermission,
-  onRequestNotification,
   onOpenBackupModal,
   onOpenAddSession,
   cloudStatus = { isConnected: true, isSyncing: false, lastSynced: new Date(), error: null },
 }) => {
   return (
-    <header className="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 transition-colors">
+    <header className="sticky top-0 z-40 bg-[#FDFBF7]/95 dark:bg-[#1C1917]/95 backdrop-blur-md border-b border-[#E8E1D5] dark:border-stone-800 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between gap-3">
         {/* Logo & Brand */}
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center shadow-md shadow-blue-500/20">
-            <GraduationCap className="w-6 h-6" />
+          <div className="w-10 h-10 rounded-2xl bg-black dark:bg-black p-1.5 border border-stone-800 dark:border-stone-700 flex items-center justify-center shadow-md shadow-stone-900/10 overflow-hidden shrink-0">
+            <img src="/favicon.svg" alt="Muda Verse" className="w-full h-full object-contain" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-base font-bold text-slate-900 dark:text-slate-100 leading-none">
-                StudyPlanner
+              <h1 className="text-base font-bold text-stone-900 dark:text-stone-100 leading-none">
+                Study Planner & Tuton Tracker
               </h1>
               {/* Cloud Realtime Badge */}
               <div
                 className={`hidden xs:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold border ${
                   cloudStatus.isSyncing
-                    ? 'bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800'
+                    ? 'bg-[#FDF6EC] dark:bg-amber-950/60 text-[#8D6A47] dark:text-amber-300 border-[#E8D6BF] dark:border-amber-800'
                     : cloudStatus.isConnected
-                    ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800'
+                    ? 'bg-[#E8F8F2] dark:bg-emerald-950/60 text-[#0D7A57] dark:text-emerald-300 border-[#A7E8CD] dark:border-emerald-800'
                     : 'bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-800'
                 }`}
                 title={
@@ -76,12 +68,12 @@ export const Navbar: React.FC<Props> = ({
               >
                 {cloudStatus.isSyncing ? (
                   <>
-                    <RefreshCw className="w-3 h-3 animate-spin text-amber-500" />
+                    <RefreshCw className="w-3 h-3 animate-spin text-[#8D6A47]" />
                     <span>Syncing...</span>
                   </>
                 ) : cloudStatus.isConnected ? (
                   <>
-                    <Cloud className="w-3 h-3 text-emerald-500" />
+                    <Cloud className="w-3 h-3 text-[#10B981]" />
                     <span>Cloud Sync</span>
                   </>
                 ) : (
@@ -92,23 +84,23 @@ export const Navbar: React.FC<Props> = ({
                 )}
               </div>
             </div>
-            <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 hidden sm:block">
+            <p className="text-[11px] text-stone-500 dark:text-stone-400 mt-0.5 hidden sm:block">
               Progress & Schedule Tracker Mahasiswa
             </p>
           </div>
         </div>
 
         {/* Navigation Tabs */}
-        <nav className="hidden md:flex items-center gap-1 bg-slate-100/80 dark:bg-slate-800/80 p-1 rounded-2xl border border-slate-200/60 dark:border-slate-700/60">
+        <nav className="hidden md:flex items-center gap-1 bg-[#F4EFE6] dark:bg-stone-800/90 p-1 rounded-2xl border border-[#E6DECة] dark:border-stone-700/70">
           <button
             onClick={() => onTabChange('DASHBOARD')}
             className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-xl transition-all ${
               activeTab === 'DASHBOARD'
-                ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-300 shadow-xs'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
+                ? 'bg-white dark:bg-stone-700 text-[#0D7A57] dark:text-emerald-300 shadow-xs border border-[#E5DDD0] dark:border-stone-600'
+                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100'
             }`}
           >
-            <LayoutDashboard className="w-4 h-4" />
+            <LayoutDashboard className="w-4 h-4 text-[#10B981]" />
             Dashboard & Jadwal
           </button>
 
@@ -116,11 +108,11 @@ export const Navbar: React.FC<Props> = ({
             onClick={() => onTabChange('SUBJECTS')}
             className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-xl transition-all ${
               activeTab === 'SUBJECTS'
-                ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-300 shadow-xs'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
+                ? 'bg-white dark:bg-stone-700 text-[#0D7A57] dark:text-emerald-300 shadow-xs border border-[#E5DDD0] dark:border-stone-600'
+                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100'
             }`}
           >
-            <BookOpen className="w-4 h-4" />
+            <BookOpen className="w-4 h-4 text-[#8D6A47]" />
             Mata Kuliah
           </button>
 
@@ -128,11 +120,11 @@ export const Navbar: React.FC<Props> = ({
             onClick={() => onTabChange('CALENDAR')}
             className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-xl transition-all ${
               activeTab === 'CALENDAR'
-                ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-300 shadow-xs'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
+                ? 'bg-white dark:bg-stone-700 text-[#0D7A57] dark:text-emerald-300 shadow-xs border border-[#E5DDD0] dark:border-stone-600'
+                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100'
             }`}
           >
-            <CalendarIcon className="w-4 h-4" />
+            <CalendarIcon className="w-4 h-4 text-[#10B981]" />
             Kalender
           </button>
 
@@ -140,52 +132,42 @@ export const Navbar: React.FC<Props> = ({
             onClick={() => onTabChange('ANALYTICS')}
             className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-xl transition-all ${
               activeTab === 'ANALYTICS'
-                ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-300 shadow-xs'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
+                ? 'bg-white dark:bg-stone-700 text-[#0D7A57] dark:text-emerald-300 shadow-xs border border-[#E5DDD0] dark:border-stone-600'
+                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100'
             }`}
           >
-            <BarChart2 className="w-4 h-4" />
+            <BarChart2 className="w-4 h-4 text-[#8D6A47]" />
             Statistik
+          </button>
+
+          <button
+            onClick={() => onTabChange('TUTON')}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-xl transition-all ${
+              activeTab === 'TUTON'
+                ? 'bg-gradient-to-r from-emerald-600 to-[#8D6A47] text-white shadow-xs font-bold'
+                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100'
+            }`}
+          >
+            <GraduationCap className="w-4 h-4 text-amber-300" />
+            Tuton (UT)
           </button>
         </nav>
 
         {/* Action Controls */}
         <div className="flex items-center gap-2">
-          {/* Notification Button */}
-          <button
-            onClick={onRequestNotification}
-            className={`p-2 rounded-xl border transition-colors ${
-              hasNotificationPermission
-                ? 'bg-emerald-50 dark:bg-emerald-950/50 border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400'
-                : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
-            }`}
-            title={hasNotificationPermission ? 'Notifikasi Pengingat Aktif' : 'Aktifkan Notifikasi Pengingat Browser'}
-          >
-            {hasNotificationPermission ? <Bell className="w-4 h-4" /> : <BellOff className="w-4 h-4" />}
-          </button>
-
           {/* Backup / Restore Button */}
           <button
             onClick={onOpenBackupModal}
-            className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+            className="p-2 rounded-xl bg-[#F4EFE6] dark:bg-stone-800 border border-[#E5DDD0] dark:border-stone-700 text-stone-600 dark:text-stone-300 hover:bg-[#EBE3D3] dark:hover:bg-stone-700 transition-colors cursor-pointer"
             title="Backup / Restore JSON Data"
           >
             <Database className="w-4 h-4" />
           </button>
 
-          {/* Dark Mode Toggle */}
-          <button
-            onClick={onToggleDarkMode}
-            className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
-            title={isDarkMode ? 'Mode Terang' : 'Mode Gelap'}
-          >
-            {isDarkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700" />}
-          </button>
-
           {/* Add Session CTA */}
           <button
             onClick={onOpenAddSession}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-md shadow-blue-500/20 transition-all"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white shadow-md shadow-emerald-700/20 transition-all cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span className="hidden sm:inline">+ Sesi Baru</span>
@@ -194,11 +176,11 @@ export const Navbar: React.FC<Props> = ({
       </div>
 
       {/* Mobile Navigation Bar */}
-      <div className="md:hidden border-t border-slate-200/80 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-900/80 px-4 py-1.5 flex items-center justify-around">
+      <div className="md:hidden border-t border-[#E8E1D5] dark:border-stone-800 bg-[#FDFBF7]/95 dark:bg-[#1C1917]/95 px-4 py-1.5 flex items-center justify-around">
         <button
           onClick={() => onTabChange('DASHBOARD')}
           className={`flex flex-col items-center gap-0.5 text-[10px] font-semibold p-1 ${
-            activeTab === 'DASHBOARD' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500 dark:text-slate-400'
+            activeTab === 'DASHBOARD' ? 'text-emerald-700 dark:text-emerald-400' : 'text-stone-500 dark:text-stone-400'
           }`}
         >
           <LayoutDashboard className="w-4 h-4" />
@@ -207,7 +189,7 @@ export const Navbar: React.FC<Props> = ({
         <button
           onClick={() => onTabChange('SUBJECTS')}
           className={`flex flex-col items-center gap-0.5 text-[10px] font-semibold p-1 ${
-            activeTab === 'SUBJECTS' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500 dark:text-slate-400'
+            activeTab === 'SUBJECTS' ? 'text-emerald-700 dark:text-emerald-400' : 'text-stone-500 dark:text-stone-400'
           }`}
         >
           <BookOpen className="w-4 h-4" />
@@ -216,7 +198,7 @@ export const Navbar: React.FC<Props> = ({
         <button
           onClick={() => onTabChange('CALENDAR')}
           className={`flex flex-col items-center gap-0.5 text-[10px] font-semibold p-1 ${
-            activeTab === 'CALENDAR' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500 dark:text-slate-400'
+            activeTab === 'CALENDAR' ? 'text-emerald-700 dark:text-emerald-400' : 'text-stone-500 dark:text-stone-400'
           }`}
         >
           <CalendarIcon className="w-4 h-4" />
@@ -225,11 +207,20 @@ export const Navbar: React.FC<Props> = ({
         <button
           onClick={() => onTabChange('ANALYTICS')}
           className={`flex flex-col items-center gap-0.5 text-[10px] font-semibold p-1 ${
-            activeTab === 'ANALYTICS' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500 dark:text-slate-400'
+            activeTab === 'ANALYTICS' ? 'text-emerald-700 dark:text-emerald-400' : 'text-stone-500 dark:text-stone-400'
           }`}
         >
           <BarChart2 className="w-4 h-4" />
           Statistik
+        </button>
+        <button
+          onClick={() => onTabChange('TUTON')}
+          className={`flex flex-col items-center gap-0.5 text-[10px] font-semibold p-1 ${
+            activeTab === 'TUTON' ? 'text-[#8D6A47] dark:text-amber-300 font-bold' : 'text-stone-500 dark:text-stone-400'
+          }`}
+        >
+          <GraduationCap className="w-4 h-4 text-amber-500" />
+          Tuton
         </button>
       </div>
     </header>

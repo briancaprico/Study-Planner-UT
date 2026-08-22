@@ -6,12 +6,75 @@ import {
   onSnapshot, 
   writeBatch,
   getDocs,
-  query
+  query,
+  deleteField
 } from 'firebase/firestore';
 import { db } from '../lib/firebase';
-import { Subject, StudySession, WeeklyTarget } from '../types';
+import { Subject, StudySession, WeeklyTarget, TutonTaskItem } from '../types';
 import { INITIAL_SUBJECTS, getInitialSessions } from '../data/initialData';
+import { getInitialTutonTasks } from '../data/initialTutonData';
 import { sortSessionsByDate } from '../utils/dateHelper';
+
+const TUTON_COLL = 'tuton_tasks';
+
+// Subscribe to Realtime Updates for Tuton Tasks
+export const subscribeToTutonTasks = (
+  onData: (tasks: TutonTaskItem[]) => void,
+  onError?: (err: Error) => void
+) => {
+  return onSnapshot(
+    collection(db, TUTON_COLL),
+    (snapshot) => {
+      const items: TutonTaskItem[] = [];
+      snapshot.forEach((doc) => {
+        items.push({ ...doc.data(), id: doc.id } as TutonTaskItem);
+      });
+      // Sort by sessionNumber and dueDate
+      items.sort((a, b) => {
+        if (a.sessionNumber !== b.sessionNumber) return a.sessionNumber - b.sessionNumber;
+        return (a.dueDate || '').localeCompare(b.dueDate || '');
+      });
+      onData(items);
+    },
+    (error) => {
+      console.error('Firestore tuton_tasks subscription error:', error);
+      if (onError) onError(error);
+    }
+  );
+};
+
+export const saveTutonTaskToCloud = async (task: TutonTaskItem) => {
+  try {
+    await setDoc(doc(db, TUTON_COLL, task.id), sanitizeForFirestore(task), { merge: true });
+  } catch (err) {
+    console.error('Error saving tuton task to cloud:', err);
+    throw err;
+  }
+};
+
+export const deleteTutonTaskFromCloud = async (taskId: string) => {
+  try {
+    await deleteDoc(doc(db, TUTON_COLL, taskId));
+  } catch (err) {
+    console.error('Error deleting tuton task from cloud:', err);
+    throw err;
+  }
+};
+
+// Helper to sanitize objects for Firestore (replaces undefined with deleteField())
+export function sanitizeForFirestore<T extends Record<string, any>>(obj: T): Record<string, any> {
+  const sanitized: Record<string, any> = {};
+  for (const [key, value] of Object.entries(obj)) {
+    if (value === undefined) {
+      sanitized[key] = deleteField();
+    } else if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
+      sanitized[key] = sanitizeForFirestore(value);
+    } else {
+      sanitized[key] = value;
+    }
+  }
+  return sanitized;
+}
 
 const SUBJECTS_COLL = 'subjects';
 const SESSIONS_COLL = 'sessions';
@@ -86,7 +149,7 @@ export const subscribeToTarget = (
 // Firestore CRUD operations for Subjects
 export const saveSubjectToCloud = async (subject: Subject) => {
   try {
-    await setDoc(doc(db, SUBJECTS_COLL, subject.id), subject, { merge: true });
+    await setDoc(doc(db, SUBJECTS_COLL, subject.id), sanitizeForFirestore(subject), { merge: true });
   } catch (err) {
     console.error('Error saving subject to cloud:', err);
     throw err;
@@ -105,7 +168,7 @@ export const deleteSubjectFromCloud = async (subjectId: string) => {
 // Firestore CRUD operations for Sessions
 export const saveSessionToCloud = async (session: StudySession) => {
   try {
-    await setDoc(doc(db, SESSIONS_COLL, session.id), session, { merge: true });
+    await setDoc(doc(db, SESSIONS_COLL, session.id), sanitizeForFirestore(session), { merge: true });
   } catch (err) {
     console.error('Error saving session to cloud:', err);
     throw err;
@@ -124,7 +187,7 @@ export const deleteSessionFromCloud = async (sessionId: string) => {
 // Firestore CRUD operations for WeeklyTarget
 export const saveTargetToCloud = async (target: WeeklyTarget) => {
   try {
-    await setDoc(doc(db, SETTINGS_COLL, 'weeklyTarget'), target, { merge: true });
+    await setDoc(doc(db, SETTINGS_COLL, 'weeklyTarget'), sanitizeForFirestore(target), { merge: true });
   } catch (err) {
     console.error('Error saving target to cloud:', err);
     throw err;
@@ -144,7 +207,7 @@ export const initializeCloudDataIfEmpty = async (
       const batch = writeBatch(db);
       const subjectsToUpload = localSubjects.length > 0 ? localSubjects : INITIAL_SUBJECTS;
       subjectsToUpload.forEach((sub) => {
-        batch.set(doc(db, SUBJECTS_COLL, sub.id), sub);
+        batch.set(doc(db, SUBJECTS_COLL, sub.id), sanitizeForFirestore(sub));
       });
       await batch.commit();
     }
@@ -155,12 +218,12 @@ export const initializeCloudDataIfEmpty = async (
       const batch = writeBatch(db);
       const sessionsToUpload = localSessions.length > 0 ? localSessions : getInitialSessions();
       sessionsToUpload.forEach((ses) => {
-        batch.set(doc(db, SESSIONS_COLL, ses.id), ses);
+        batch.set(doc(db, SESSIONS_COLL, ses.id), sanitizeForFirestore(ses));
       });
       await batch.commit();
     }
 
-    await setDoc(doc(db, SETTINGS_COLL, 'weeklyTarget'), localTarget, { merge: true });
+    await setDoc(doc(db, SETTINGS_COLL, 'weeklyTarget'), sanitizeForFirestore(localTarget), { merge: true });
   } catch (err) {
     console.warn('Could not auto-initialize cloud data:', err);
   }
@@ -185,9 +248,9 @@ export const overwriteAllCloudData = async (
 
     // Upload new data
     const batchUpload = writeBatch(db);
-    subjects.forEach((s) => batchUpload.set(doc(db, SUBJECTS_COLL, s.id), s));
-    sessions.forEach((s) => batchUpload.set(doc(db, SESSIONS_COLL, s.id), s));
-    batchUpload.set(doc(db, SETTINGS_COLL, 'weeklyTarget'), target);
+    subjects.forEach((s) => batchUpload.set(doc(db, SUBJECTS_COLL, s.id), sanitizeForFirestore(s)));
+    sessions.forEach((s) => batchUpload.set(doc(db, SESSIONS_COLL, s.id), sanitizeForFirestore(s)));
+    batchUpload.set(doc(db, SETTINGS_COLL, 'weeklyTarget'), sanitizeForFirestore(target));
 
     await batchUpload.commit();
   } catch (err) {

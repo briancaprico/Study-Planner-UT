@@ -62,3 +62,18 @@ export interface DailyStat {
   hours: number;
   completedCount: number;
 }
+
+export interface TutonTaskItem {
+  id: string;
+  subjectId: string;
+  subjectCode: string;
+  subjectName: string;
+  sessionNumber: number; // 1 to 8
+  title: string;
+  taskType: 'DISKUSI' | 'TUGAS_1' | 'TUGAS_2' | 'TUGAS_3' | 'KEHADIRAN' | 'UAS';
+  dueDate: string; // YYYY-MM-DD
+  time?: string;
+  isCompleted: boolean;
+  score?: number; // 0 - 100
+  notes?: string;
+}

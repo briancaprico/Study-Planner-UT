@@ -12,13 +12,13 @@ interface Props {
 }
 
 const PRESET_COLORS = [
-  '#3B82F6', // Blue
+  '#0D7A57', // Forest Mint
   '#10B981', // Emerald
-  '#F59E0B', // Amber
-  '#EC4899', // Pink
-  '#8B5CF6', // Purple
-  '#06B6D4', // Cyan
-  '#F97316', // Orange
+  '#8D6A47', // Light Brown Accent
+  '#B48455', // Warm Brown
+  '#D97706', // Amber
+  '#059669', // Mint Teal
+  '#6366F1', // Indigo
   '#64748B', // Slate
 ];
 
@@ -37,7 +37,7 @@ export const SubjectManager: React.FC<Props> = ({
   // Form State
   const [code, setCode] = useState('');
   const [name, setName] = useState('');
-  const [color, setColor] = useState('#3B82F6');
+  const [color, setColor] = useState('#0D7A57');
   const [targetHours, setTargetHours] = useState('15');
   const [lecturer, setLecturer] = useState('');
   const [sks, setSks] = useState('3');
@@ -45,7 +45,7 @@ export const SubjectManager: React.FC<Props> = ({
   const startCreate = () => {
     setCode('');
     setName('');
-    setColor('#3B82F6');
+    setColor('#0D7A57');
     setTargetHours('15');
     setLecturer('');
     setSks('3');
@@ -97,19 +97,19 @@ export const SubjectManager: React.FC<Props> = ({
   };
 
   const content = (
-    <div className={`bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 flex flex-col ${isInline ? 'shadow-xs' : 'max-w-2xl w-full shadow-2xl animate-in fade-in zoom-in duration-150 max-h-[90vh]'}`}>
+    <div className={`bg-white dark:bg-stone-900 rounded-2xl p-5 border border-[#E8E1D5] dark:border-stone-800 flex flex-col ${isInline ? 'shadow-xs' : 'max-w-2xl w-full shadow-2xl animate-in fade-in zoom-in duration-150 max-h-[90vh]'}`}>
       {/* Header */}
-      <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 shrink-0">
+      <div className="flex items-center justify-between pb-3 border-b border-[#E8E1D5] dark:border-stone-800 shrink-0">
         <div className="flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-          <h2 className="font-bold text-slate-900 dark:text-slate-100 text-base">
-            Kelola Mata Kuliah & Kurikulum S1 Ilmu Hukum UT
+          <BookOpen className="w-5 h-5 text-[#0D7A57] dark:text-emerald-400" />
+          <h2 className="font-bold text-stone-900 dark:text-stone-100 text-base">
+            Kelola Mata Kuliah & Kurikulum
           </h2>
         </div>
         {onClose && (
           <button
             onClick={onClose}
-            className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg"
+            className="p-1 text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 rounded-lg cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -120,44 +120,44 @@ export const SubjectManager: React.FC<Props> = ({
         <div className="py-4 overflow-y-auto flex-1 space-y-4">
           {isCreating ? (
             /* Add / Edit Form */
-            <form onSubmit={handleSave} className="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-xl border border-slate-200/80 dark:border-slate-700/80 space-y-3">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+            <form onSubmit={handleSave} className="bg-[#FAF7F2] dark:bg-stone-800/60 p-4 rounded-xl border border-[#E8E1D5] dark:border-stone-700/80 space-y-3">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400">
                 {editingSubject ? 'Edit Mata Kuliah' : 'Tambah Mata Kuliah Baru'}
               </h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
                     Kode Matkul *
                   </label>
                   <input
                     type="text"
-                    placeholder="Contoh: IF-201"
+                    placeholder="Contoh: HKUM4101"
                     value={code}
                     onChange={(e) => setCode(e.target.value)}
                     required
-                    className="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-1.5 text-xs rounded-lg border border-[#E8E1D5] dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 focus:ring-2 focus:ring-[#10B981]"
                   />
                 </div>
 
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
                     Nama Mata Kuliah *
                   </label>
                   <input
                     type="text"
-                    placeholder="Contoh: Algoritma & Pemrograman"
+                    placeholder="Contoh: Pengantar Ilmu Hukum"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
-                    className="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-1.5 text-xs rounded-lg border border-[#E8E1D5] dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 focus:ring-2 focus:ring-[#10B981]"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
                     Target Jam
                   </label>
                   <input
@@ -165,12 +165,12 @@ export const SubjectManager: React.FC<Props> = ({
                     value={targetHours}
                     onChange={(e) => setTargetHours(e.target.value)}
                     min="1"
-                    className="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-1.5 text-xs rounded-lg border border-[#E8E1D5] dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 focus:ring-2 focus:ring-[#10B981]"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
                     SKS
                   </label>
                   <input
@@ -179,12 +179,12 @@ export const SubjectManager: React.FC<Props> = ({
                     onChange={(e) => setSks(e.target.value)}
                     min="1"
                     max="6"
-                    className="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-1.5 text-xs rounded-lg border border-[#E8E1D5] dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 focus:ring-2 focus:ring-[#10B981]"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
                     Dosen Pengampu
                   </label>
                   <input
@@ -192,14 +192,14 @@ export const SubjectManager: React.FC<Props> = ({
                     placeholder="Dr. Ir. Budi..."
                     value={lecturer}
                     onChange={(e) => setLecturer(e.target.value)}
-                    className="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-1.5 text-xs rounded-lg border border-[#E8E1D5] dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 focus:ring-2 focus:ring-[#10B981]"
                   />
                 </div>
               </div>
 
               {/* Color Presets */}
               <div>
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
                   Warna Identitas
                 </label>
                 <div className="flex items-center gap-2">
@@ -208,8 +208,8 @@ export const SubjectManager: React.FC<Props> = ({
                       key={c}
                       type="button"
                       onClick={() => setColor(c)}
-                      className={`w-6 h-6 rounded-full flex items-center justify-center transition-transform ${
-                        color === c ? 'ring-2 ring-offset-2 ring-blue-500 scale-110' : ''
+                      className={`w-6 h-6 rounded-full flex items-center justify-center transition-transform cursor-pointer ${
+                        color === c ? 'ring-2 ring-offset-2 ring-[#0D7A57] scale-110' : ''
                       }`}
                       style={{ backgroundColor: c }}
                     >
@@ -226,17 +226,17 @@ export const SubjectManager: React.FC<Props> = ({
                 </div>
               </div>
 
-              <div className="flex justify-end gap-2 pt-2 border-t border-slate-200/80 dark:border-slate-700/80">
+              <div className="flex justify-end gap-2 pt-2 border-t border-[#E8E1D5] dark:border-stone-700/80">
                 <button
                   type="button"
                   onClick={() => setIsCreating(false)}
-                  className="px-3 py-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                  className="px-3 py-1.5 text-xs font-semibold text-stone-600 dark:text-stone-300 hover:bg-[#E8E1D5] dark:hover:bg-stone-700 rounded-lg transition-colors cursor-pointer"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-1.5 text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                  className="px-4 py-1.5 text-xs font-semibold bg-[#0D7A57] hover:bg-[#0A5D42] text-white rounded-lg transition-colors cursor-pointer"
                 >
                   Simpan Matkul
                 </button>
@@ -245,7 +245,7 @@ export const SubjectManager: React.FC<Props> = ({
           ) : (
             <button
               onClick={startCreate}
-              className="w-full py-2.5 border-2 border-dashed border-slate-200 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-400 rounded-xl text-xs font-semibold text-blue-600 dark:text-blue-400 flex items-center justify-center gap-1.5 transition-colors"
+              className="w-full py-2.5 border-2 border-dashed border-[#E8E1D5] dark:border-stone-700 hover:border-[#10B981] dark:hover:border-emerald-400 rounded-xl text-xs font-semibold text-[#0D7A57] dark:text-emerald-400 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               + Tambah Mata Kuliah Baru
@@ -259,7 +259,7 @@ export const SubjectManager: React.FC<Props> = ({
               return (
                 <div
                   key={subj.id}
-                  className="rounded-xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-800/80 overflow-hidden transition-all"
+                  className="rounded-xl border border-[#E8E1D5] dark:border-stone-800 bg-white dark:bg-stone-800/80 overflow-hidden transition-all"
                 >
                   <div className="p-3.5 flex items-center justify-between gap-3">
                     <div className="flex items-center gap-3 min-w-0">
@@ -269,26 +269,26 @@ export const SubjectManager: React.FC<Props> = ({
                       />
                       <div className="min-w-0">
                         <div className="flex items-center gap-2">
-                          <span className="text-xs font-bold text-slate-900 dark:text-slate-100">
+                          <span className="text-xs font-bold text-stone-900 dark:text-stone-100">
                             {subj.code}
                           </span>
                           {subj.sks && (
-                            <span className="text-[10px] px-1.5 py-0.2 rounded bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-medium">
+                            <span className="text-[10px] px-1.5 py-0.2 rounded bg-[#FAF7F2] dark:bg-stone-700 text-stone-600 dark:text-stone-300 font-medium">
                               {subj.sks} SKS
                             </span>
                           )}
                           {subj.topics && subj.topics.length > 0 && (
-                            <span className="text-[10px] px-1.5 py-0.2 rounded bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 font-medium flex items-center gap-1">
+                            <span className="text-[10px] px-1.5 py-0.2 rounded bg-[#E8F8F2] dark:bg-emerald-950/60 text-[#0D7A57] dark:text-emerald-400 font-medium flex items-center gap-1">
                               <ListChecks className="w-3 h-3" />
                               {subj.topics.length} Materi
                             </span>
                           )}
                         </div>
-                        <h4 className="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate">
+                        <h4 className="text-xs font-semibold text-stone-800 dark:text-stone-200 truncate">
                           {subj.name}
                         </h4>
                         {subj.lecturer && (
-                          <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
+                          <p className="text-[11px] text-stone-500 dark:text-stone-400 truncate">
                             Dosen/Program: {subj.lecturer}
                           </p>
                         )}
@@ -299,7 +299,7 @@ export const SubjectManager: React.FC<Props> = ({
                       {subj.topics && subj.topics.length > 0 && (
                         <button
                           onClick={() => setExpandedSubjectId(isExpanded ? null : subj.id)}
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-1 text-[11px] font-medium"
+                          className="p-1.5 rounded-lg text-stone-400 hover:text-[#0D7A57] dark:hover:text-emerald-400 hover:bg-[#FAF7F2] dark:hover:bg-stone-700 flex items-center gap-1 text-[11px] font-medium cursor-pointer"
                           title="Lihat Daftar Materi"
                         >
                           <span className="hidden sm:inline">Materi</span>
@@ -308,14 +308,14 @@ export const SubjectManager: React.FC<Props> = ({
                       )}
                       <button
                         onClick={() => startEdit(subj)}
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-700"
+                        className="p-1.5 rounded-lg text-stone-400 hover:text-[#0D7A57] dark:hover:text-emerald-400 hover:bg-[#FAF7F2] dark:hover:bg-stone-700 cursor-pointer"
                         title="Edit"
                       >
                         <Edit2 className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => onDeleteSubject(subj.id)}
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-slate-100 dark:hover:bg-slate-700"
+                        className="p-1.5 rounded-lg text-stone-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-[#FAF7F2] dark:hover:bg-stone-700 cursor-pointer"
                         title="Hapus"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -325,19 +325,19 @@ export const SubjectManager: React.FC<Props> = ({
 
                   {/* Expanded Topics List */}
                   {isExpanded && subj.topics && (
-                    <div className="px-4 pb-3.5 pt-1 border-t border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/40">
+                    <div className="px-4 pb-3.5 pt-1 border-t border-[#E8E1D5] dark:border-stone-800/80 bg-[#FAF7F2]/50 dark:bg-stone-900/40">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                          Daftar Materi Pokok Curriculum S1 Ilmu Hukum UT:
+                        <span className="text-[11px] font-bold text-stone-500 dark:text-stone-400 uppercase tracking-wider">
+                          Daftar Materi Pokok:
                         </span>
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                         {subj.topics.map((tp, idx) => (
                           <div
                             key={idx}
-                            className="text-xs py-1 px-2.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60 text-slate-700 dark:text-slate-300 flex items-center gap-2"
+                            className="text-xs py-1 px-2.5 rounded-lg bg-white dark:bg-stone-800 border border-[#E8E1D5] dark:border-stone-700/60 text-stone-700 dark:text-stone-300 flex items-center gap-2"
                           >
-                            <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] shrink-0" />
                             <span className="truncate">{tp}</span>
                           </div>
                         ))}
@@ -351,10 +351,10 @@ export const SubjectManager: React.FC<Props> = ({
         </div>
 
         {onClose && (
-          <div className="pt-3 border-t border-slate-100 dark:border-slate-800 text-right">
+          <div className="pt-3 border-t border-[#E8E1D5] dark:border-stone-800 text-right">
             <button
               onClick={onClose}
-              className="px-4 py-2 text-xs font-semibold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl transition-colors"
+              className="px-4 py-2 text-xs font-semibold bg-[#FAF7F2] dark:bg-stone-800 hover:bg-[#F3EFEA] dark:hover:bg-stone-700 text-stone-700 dark:text-stone-200 rounded-xl transition-colors border border-[#E8E1D5] dark:border-stone-700 cursor-pointer"
             >
               Selesai
             </button>
@@ -368,7 +368,7 @@ export const SubjectManager: React.FC<Props> = ({
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 bg-stone-950/60 backdrop-blur-xs flex items-center justify-center p-4">
       {content}
     </div>
   );

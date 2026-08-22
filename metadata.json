@@ -1,6 +1,6 @@
 {
-  "name": "Study Planner & Progress Tracker",
-  "description": "Aplikasi perencanaan jadwal belajar, pencatatan progres, statistik real-time, dan manajemen mata kuliah untuk mahasiswa.",
+  "name": "Study Planner & Tuton Tracker",
+  "description": "Aplikasi perencanaan jadwal belajar, pencatatan progres, statistik real-time, dan manajemen Tutorial Online (Tuton) UT.",
   "requestFramePermissions": ["notifications"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

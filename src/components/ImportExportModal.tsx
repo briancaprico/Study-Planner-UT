@@ -20,8 +20,6 @@ export const ImportExportModal: React.FC<Props> = ({
   onRestoreData,
   onClose,
 }) => {
-  if (!isOpen) return null;
-
   const [jsonInput, setJsonInput] = useState('');
   const [copied, setCopied] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -93,20 +91,22 @@ export const ImportExportModal: React.FC<Props> = ({
     }
   };
 
+  if (!isOpen) return null;
+
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full p-5 border border-slate-200 dark:border-slate-800 shadow-2xl animate-in fade-in zoom-in duration-150 max-h-[90vh] flex flex-col">
+    <div className="fixed inset-0 z-50 bg-stone-900/50 backdrop-blur-xs flex items-center justify-center p-4">
+      <div className="bg-white dark:bg-stone-900 rounded-2xl max-w-lg w-full p-5 border border-[#E8E1D5] dark:border-stone-800 shadow-2xl animate-in fade-in zoom-in duration-150 max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 shrink-0">
+        <div className="flex items-center justify-between pb-3 border-b border-[#E8E1D5] dark:border-stone-800 shrink-0">
           <div className="flex items-center gap-2">
-            <Database className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-            <h2 className="font-bold text-slate-900 dark:text-slate-100 text-base">
+            <Database className="w-5 h-5 text-[#0D7A57] dark:text-emerald-400" />
+            <h2 className="font-bold text-stone-900 dark:text-stone-100 text-base">
               Backup & Restore Data (JSON)
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg"
+            className="p-1 text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 rounded-lg cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -122,58 +122,58 @@ export const ImportExportModal: React.FC<Props> = ({
           )}
 
           {successMsg && (
-            <div className="p-3 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 rounded-xl text-xs flex items-center gap-2">
+            <div className="p-3 bg-[#E8F8F2] dark:bg-emerald-950/50 border border-[#10B981] text-[#0D7A57] dark:text-emerald-300 rounded-xl text-xs flex items-center gap-2">
               <Check className="w-4 h-4 shrink-0" />
               <span>{successMsg}</span>
             </div>
           )}
 
           {/* Export Section */}
-          <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200/80 dark:border-slate-700/80 space-y-2">
-            <h3 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
+          <div className="p-4 bg-[#FAF7F2] dark:bg-stone-800/50 rounded-xl border border-[#E8E1D5] dark:border-stone-700/80 space-y-2">
+            <h3 className="text-xs font-bold text-stone-800 dark:text-stone-200 uppercase tracking-wider">
               1. Export Data (Backup)
             </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
+            <p className="text-xs text-stone-500 dark:text-stone-400">
               Unduh cadangan data jadwal, mata kuliah, dan statistik Anda dalam format JSON.
             </p>
             <div className="flex items-center gap-2 pt-1">
               <button
                 onClick={handleExportDownload}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-colors shadow-xs"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-[#0D7A57] hover:bg-[#0A5D42] text-white rounded-xl transition-colors shadow-xs cursor-pointer"
               >
                 <Download className="w-3.5 h-3.5" />
                 Unduh File JSON
               </button>
               <button
                 onClick={handleCopyClipboard}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-xl transition-colors"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-white dark:bg-stone-700 border border-[#E8E1D5] dark:border-stone-600 hover:bg-[#FAF7F2] dark:hover:bg-stone-600 text-stone-700 dark:text-stone-200 rounded-xl transition-colors cursor-pointer"
               >
-                {copied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                {copied ? <Check className="w-3.5 h-3.5 text-[#0D7A57]" /> : <Copy className="w-3.5 h-3.5" />}
                 {copied ? 'Tersalin!' : 'Salin JSON'}
               </button>
             </div>
           </div>
 
           {/* Import Section */}
-          <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200/80 dark:border-slate-700/80 space-y-3">
-            <h3 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
+          <div className="p-4 bg-[#FAF7F2] dark:bg-stone-800/50 rounded-xl border border-[#E8E1D5] dark:border-stone-700/80 space-y-3">
+            <h3 className="text-xs font-bold text-stone-800 dark:text-stone-200 uppercase tracking-wider">
               2. Import Data (Restore)
             </h3>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-stone-600 dark:text-stone-300 mb-1">
                 A. Upload File JSON:
               </label>
               <input
                 type="file"
                 accept=".json"
                 onChange={handleFileUpload}
-                className="block w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 dark:file:bg-blue-950 dark:file:text-blue-300 hover:file:bg-blue-100 cursor-pointer"
+                className="block w-full text-xs text-stone-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#E8F8F2] file:text-[#0D7A57] dark:file:bg-emerald-950 dark:file:text-emerald-300 hover:file:bg-[#d5f3e7] cursor-pointer"
               />
             </div>
 
-            <div className="pt-2 border-t border-slate-200/60 dark:border-slate-700/60">
-              <label className="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">
+            <div className="pt-2 border-t border-[#E8E1D5] dark:border-stone-700/60">
+              <label className="block text-xs font-semibold text-stone-600 dark:text-stone-300 mb-1">
                 B. Atau Tempel Kode Teks JSON:
               </label>
               <textarea
@@ -181,11 +181,11 @@ export const ImportExportModal: React.FC<Props> = ({
                 onChange={(e) => setJsonInput(e.target.value)}
                 placeholder='Tempelkan isi JSON cadangan di sini...'
                 rows={3}
-                className="w-full px-3 py-2 text-xs font-mono rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 resize-none placeholder:text-slate-400"
+                className="w-full px-3 py-2 text-xs font-mono rounded-xl border border-[#E8E1D5] dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 focus:ring-2 focus:ring-[#0D7A57] resize-none placeholder:text-stone-400"
               />
               <button
                 onClick={handleImportText}
-                className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl transition-colors shadow-xs"
+                className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-[#8D6A47] hover:bg-[#725436] text-white rounded-xl transition-colors shadow-xs cursor-pointer"
               >
                 <Upload className="w-3.5 h-3.5" />
                 Proses Restore JSON
@@ -203,7 +203,7 @@ export const ImportExportModal: React.FC<Props> = ({
             </div>
             <button
               onClick={handleResetData}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-rose-600 hover:bg-rose-700 text-white rounded-xl transition-colors shrink-0"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-rose-600 hover:bg-rose-700 text-white rounded-xl transition-colors shrink-0 cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               Reset Data
@@ -212,10 +212,10 @@ export const ImportExportModal: React.FC<Props> = ({
         </div>
 
         {/* Footer */}
-        <div className="pt-3 border-t border-slate-100 dark:border-slate-800 text-right">
+        <div className="pt-3 border-t border-[#E8E1D5] dark:border-stone-800 text-right">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-xs font-semibold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl transition-colors"
+            className="px-4 py-2 text-xs font-semibold bg-[#FAF7F2] dark:bg-stone-800 hover:bg-[#E8E1D5] dark:hover:bg-stone-700 text-stone-700 dark:text-stone-200 rounded-xl transition-colors cursor-pointer"
           >
             Tutup
           </button>

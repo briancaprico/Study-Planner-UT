@@ -11,6 +11,9 @@ service cloud.firestore {
     match /settings/{settingId} {
       allow read, write: if true;
     }
+    match /tuton_tasks/{taskId} {
+      allow read, write: if true;
+    }
     match /workspaces/{workspaceId}/{document=**} {
       allow read, write: if true;
     }

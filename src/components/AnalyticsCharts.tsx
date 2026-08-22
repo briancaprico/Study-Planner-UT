@@ -39,7 +39,7 @@ interface Props {
 export const AnalyticsCharts: React.FC<Props> = ({ sessions, subjects, isDarkMode }) => {
   const [timeframe, setTimeframe] = useState<'DAILY' | 'WEEKLY' | 'MONTHLY'>('DAILY');
 
-  const textColor = isDarkMode ? '#CBD5E1' : '#334155';
+  const textColor = isDarkMode ? '#D6D3D1' : '#44403C';
   const gridColor = isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)';
 
   // 1. Dynamic Bar Chart Data based on timeframe
@@ -76,8 +76,8 @@ export const AnalyticsCharts: React.FC<Props> = ({ sessions, subjects, isDarkMod
             {
               label: 'Target Jam Terjadwal',
               data: scheduledData,
-              backgroundColor: isDarkMode ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.1)',
-              borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.2)',
+              backgroundColor: isDarkMode ? 'rgba(141, 106, 71, 0.35)' : 'rgba(141, 106, 71, 0.2)',
+              borderColor: '#8D6A47',
               borderRadius: 8,
               borderWidth: 1,
             },
@@ -107,7 +107,15 @@ export const AnalyticsCharts: React.FC<Props> = ({ sessions, subjects, isDarkMod
         '2026-09': 'September 2026',
       };
 
-      const labels = monthKeys.map((k) => monthNames[k] || k);
+      const labels = monthKeys.map((k) => {
+        if (monthNames[k]) return monthNames[k];
+        const [y, m] = k.split('-').map(Number);
+        if (y && m) {
+          const d = new Date(y, m - 1, 1);
+          return d.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+        }
+        return k;
+      });
       const completedData = monthKeys.map((k) => parseFloat(monthsMap[k].completed.toFixed(1)));
       const scheduledData = monthKeys.map((k) => parseFloat(monthsMap[k].scheduled.toFixed(1)));
 
@@ -127,8 +135,8 @@ export const AnalyticsCharts: React.FC<Props> = ({ sessions, subjects, isDarkMod
             {
               label: 'Target Jam Terjadwal',
               data: scheduledData,
-              backgroundColor: isDarkMode ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.1)',
-              borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.2)',
+              backgroundColor: isDarkMode ? 'rgba(141, 106, 71, 0.35)' : 'rgba(141, 106, 71, 0.2)',
+              borderColor: '#8D6A47',
               borderRadius: 8,
               borderWidth: 1,
             },
@@ -168,8 +176,8 @@ export const AnalyticsCharts: React.FC<Props> = ({ sessions, subjects, isDarkMod
           {
             label: 'Jam Belajar Selesai',
             data: hoursData,
-            backgroundColor: 'rgba(59, 130, 246, 0.85)',
-            borderColor: '#3B82F6',
+            backgroundColor: 'rgba(13, 122, 87, 0.85)',
+            borderColor: '#0D7A57',
             borderRadius: 8,
             borderWidth: 1,
           },
@@ -250,7 +258,8 @@ export const AnalyticsCharts: React.FC<Props> = ({ sessions, subjects, isDarkMod
       {
         label: 'Target Jam',
         data: subjects.map((s) => s.targetHours),
-        backgroundColor: isDarkMode ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.1)',
+        backgroundColor: isDarkMode ? 'rgba(141, 106, 71, 0.35)' : 'rgba(141, 106, 71, 0.2)',
+        borderColor: '#8D6A47',
         borderRadius: 6,
       },
     ],
@@ -276,15 +285,15 @@ export const AnalyticsCharts: React.FC<Props> = ({ sessions, subjects, isDarkMod
       {
         data: typeCounts,
         backgroundColor: [
-          '#6366F1', // Indigo
-          '#A855F7', // Purple
-          '#06B6D4', // Cyan
-          '#F59E0B', // Amber
-          '#F43F5E', // Rose
-          '#10B981', // Emerald
+          '#0D7A57', // Mint Deep Forest
+          '#10B981', // Mint Bright
+          '#8D6A47', // Light Brown Accent
+          '#B45309', // Warm Amber
+          '#059669', // Emerald
+          '#A78BFA', // Soft Lavender
         ],
         borderWidth: 2,
-        borderColor: isDarkMode ? '#0F172A' : '#FFFFFF',
+        borderColor: isDarkMode ? '#1C1917' : '#FFFFFF',
       },
     ],
   };
@@ -315,44 +324,44 @@ export const AnalyticsCharts: React.FC<Props> = ({ sessions, subjects, isDarkMod
   return (
     <div className="space-y-5">
       {/* Top Header */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-colors">
+      <div className="bg-white dark:bg-stone-900 rounded-2xl p-5 border border-[#E8E1D5] dark:border-stone-800 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-colors">
         <div>
-          <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-            <BarChart2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+          <h2 className="text-base font-bold text-stone-900 dark:text-stone-100 flex items-center gap-2">
+            <BarChart2 className="w-5 h-5 text-[#0D7A57] dark:text-emerald-400" />
             Statistik & Analytics Belajar Real-time
           </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
             Analisis kebiasaan belajar, alokasi jam per mata kuliah, dan tren performa.
           </p>
         </div>
 
-        <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200/60 dark:border-slate-700/60">
+        <div className="flex items-center gap-1.5 bg-[#FAF7F2] dark:bg-stone-800 p-1 rounded-xl border border-[#E8E1D5] dark:border-stone-700">
           <button
             onClick={() => setTimeframe('DAILY')}
-            className={`px-3 py-1 text-xs font-semibold rounded-lg transition-colors ${
+            className={`px-3 py-1 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
               timeframe === 'DAILY'
-                ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-300 shadow-xs'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                ? 'bg-white dark:bg-stone-700 text-[#0D7A57] dark:text-emerald-300 shadow-xs'
+                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900'
             }`}
           >
             Harian
           </button>
           <button
             onClick={() => setTimeframe('WEEKLY')}
-            className={`px-3 py-1 text-xs font-semibold rounded-lg transition-colors ${
+            className={`px-3 py-1 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
               timeframe === 'WEEKLY'
-                ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-300 shadow-xs'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                ? 'bg-white dark:bg-stone-700 text-[#0D7A57] dark:text-emerald-300 shadow-xs'
+                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900'
             }`}
           >
             Mingguan
           </button>
           <button
             onClick={() => setTimeframe('MONTHLY')}
-            className={`px-3 py-1 text-xs font-semibold rounded-lg transition-colors ${
+            className={`px-3 py-1 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
               timeframe === 'MONTHLY'
-                ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-300 shadow-xs'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                ? 'bg-white dark:bg-stone-700 text-[#0D7A57] dark:text-emerald-300 shadow-xs'
+                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900'
             }`}
           >
             Bulanan
@@ -363,10 +372,10 @@ export const AnalyticsCharts: React.FC<Props> = ({ sessions, subjects, isDarkMod
       {/* Grid Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {/* Chart 1: Timeframe Study Hours */}
-        <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm transition-colors flex flex-col">
+        <div className="bg-white dark:bg-stone-900 rounded-2xl p-5 border border-[#E8E1D5] dark:border-stone-800 shadow-sm transition-colors flex flex-col">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
-              <Clock className="w-4 h-4 text-blue-500" />
+            <h3 className="text-sm font-bold text-stone-800 dark:text-stone-200 flex items-center gap-2">
+              <Clock className="w-4 h-4 text-[#8D6A47]" />
               {currentBarConfig.title}
             </h3>
           </div>
@@ -376,10 +385,10 @@ export const AnalyticsCharts: React.FC<Props> = ({ sessions, subjects, isDarkMod
         </div>
 
         {/* Chart 2: Cumulative Progress Trend */}
-        <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm transition-colors flex flex-col">
+        <div className="bg-white dark:bg-stone-900 rounded-2xl p-5 border border-[#E8E1D5] dark:border-stone-800 shadow-sm transition-colors flex flex-col">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-emerald-500" />
+            <h3 className="text-sm font-bold text-stone-800 dark:text-stone-200 flex items-center gap-2">
+              <TrendingUp className="w-4 h-4 text-[#10B981]" />
               Grafik Perkembangan Belajar (Akumulasi Jam)
             </h3>
           </div>
@@ -389,10 +398,10 @@ export const AnalyticsCharts: React.FC<Props> = ({ sessions, subjects, isDarkMod
         </div>
 
         {/* Chart 3: Subject Progress vs Target */}
-        <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm transition-colors flex flex-col">
+        <div className="bg-white dark:bg-stone-900 rounded-2xl p-5 border border-[#E8E1D5] dark:border-stone-800 shadow-sm transition-colors flex flex-col">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
-              <BookOpen className="w-4 h-4 text-purple-500" />
+            <h3 className="text-sm font-bold text-stone-800 dark:text-stone-200 flex items-center gap-2">
+              <BookOpen className="w-4 h-4 text-[#0D7A57]" />
               Progress Jam Per Mata Kuliah
             </h3>
           </div>
@@ -402,10 +411,10 @@ export const AnalyticsCharts: React.FC<Props> = ({ sessions, subjects, isDarkMod
         </div>
 
         {/* Chart 4: Session Type Distribution */}
-        <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm transition-colors flex flex-col">
+        <div className="bg-white dark:bg-stone-900 rounded-2xl p-5 border border-[#E8E1D5] dark:border-stone-800 shadow-sm transition-colors flex flex-col">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
-              <PieChart className="w-4 h-4 text-amber-500" />
+            <h3 className="text-sm font-bold text-stone-800 dark:text-stone-200 flex items-center gap-2">
+              <PieChart className="w-4 h-4 text-[#8D6A47]" />
               Distribusi Jenis Sesi Selesai
             </h3>
           </div>

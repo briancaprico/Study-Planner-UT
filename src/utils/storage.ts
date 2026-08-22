@@ -1,5 +1,6 @@
-import { Subject, StudySession, WeeklyTarget } from '../types';
+import { Subject, StudySession, WeeklyTarget, TutonTaskItem } from '../types';
 import { INITIAL_SUBJECTS, getInitialSessions } from '../data/initialData';
+import { getInitialTutonTasks } from '../data/initialTutonData';
 import { sortSessionsByDate } from './dateHelper';
 
 const KEYS = {
@@ -7,6 +8,27 @@ const KEYS = {
   SESSIONS: 'study_planner_sessions_v7',
   TARGET: 'study_planner_target_v3',
   THEME: 'study_planner_theme_v1',
+  TUTON: 'study_planner_tuton_v1',
+};
+
+export const loadTutonTasks = (): TutonTaskItem[] => {
+  try {
+    const raw = localStorage.getItem(KEYS.TUTON);
+    if (raw) {
+      return JSON.parse(raw);
+    }
+  } catch (e) {
+    console.error('Failed to parse tuton tasks from localStorage', e);
+  }
+  return getInitialTutonTasks();
+};
+
+export const saveTutonTasks = (tasks: TutonTaskItem[]): void => {
+  try {
+    localStorage.setItem(KEYS.TUTON, JSON.stringify(tasks));
+  } catch (e) {
+    console.error('Failed to save tuton tasks to localStorage', e);
+  }
 };
 
 export const loadSubjects = (): Subject[] => {
